@@ -1,0 +1,6 @@
+FINAL SCORES (LANGCHAIN)
+========================================
+  easy     : 0.5833
+  medium   : 0.8583
+  hard     : 0.7667
+  AVERAGE  : 0.7361
