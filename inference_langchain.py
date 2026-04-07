@@ -56,6 +56,7 @@ chain = prompt | llm | parser
 
 def run_task(env: SupportEnvironment, task: str) -> float:
     print(f"\n{'='*60}\n  TASK: {task.upper()}\n{'='*60}")
+    print(f"[START] task={task}", flush=True)
     obs = env.reset(task=task)
     print(f"  > {obs.feedback}")
     
@@ -94,10 +95,13 @@ def run_task(env: SupportEnvironment, task: str) -> float:
         obs = env.step(action)
         done = obs.done
         
+        print(f"[STEP] step={step_num} reward={obs.reward}", flush=True)
+        
         print(f"    > Feedback: {obs.feedback}")
         if obs.customer_response:
             print(f"    > Customer: {obs.customer_response[:80]}...")
             
+    print(f"[END] task={task} score={obs.reward} steps={step_num}", flush=True)
     return obs.reward
 
 def main():
