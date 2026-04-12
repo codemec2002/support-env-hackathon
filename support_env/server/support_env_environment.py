@@ -360,7 +360,7 @@ class SupportEnvironment(Environment):
 
         # Check if agent exceeded step limit for this ticket
         if self._ticket_step_count > self.MAX_STEPS_PER_TICKET and not done:
-            self._ticket_scores.append(0.0)
+            self._ticket_scores.append(0.001)
             feedback = f"Step limit exceeded for ticket {ticket['id']}. Score: 0.00"
             done = self._advance_to_next_ticket()
 
@@ -369,13 +369,15 @@ class SupportEnvironment(Environment):
             final_score = (
                 sum(self._ticket_scores) / len(self._ticket_scores)
                 if self._ticket_scores
-                else 0.0
+                else 0.001
             )
+            final_score = max(0.001, min(0.999, final_score))
             self._state.cumulative_score = final_score
             reward = final_score
 
         # Build observation
         current_ticket = self._current_ticket or ticket
+        reward = max(0.001, min(0.999, reward))
         return SupportObservation(
             done=done,
             reward=round(reward, 4),
@@ -449,7 +451,7 @@ class SupportEnvironment(Environment):
             efficiency = max(0.0, 1.0 - (self._ticket_step_count - 1) / self.MAX_STEPS_PER_TICKET)
             score += 0.15 * efficiency
 
-        return round(min(score, 1.0), 4)
+        return round(max(0.001, min(0.999, score)), 4)
 
     # ------------------------------------------------------------------
     # helpers
@@ -475,8 +477,9 @@ class SupportEnvironment(Environment):
         final_score = (
             sum(self._ticket_scores) / len(self._ticket_scores)
             if self._ticket_scores
-            else 0.0
+            else 0.001
         )
+        final_score = max(0.001, min(0.999, final_score))
         return SupportObservation(
             done=True,
             reward=round(final_score, 4),
