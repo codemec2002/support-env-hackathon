@@ -1,0 +1,18 @@
+spec_version: 1
+name: support_env
+type: space
+runtime: fastapi
+app: server.app:app
+port: 8000
+
+# Task definitions for automated grading
+tasks:
+  - name: easy
+    description: "Categorise 3 simple, clear-cut customer support tickets"
+    difficulty: easy
+  - name: medium
+    description: "Resolve 3 straightforward refund/replacement tickets following company policy"
+    difficulty: medium
+  - name: hard
+    description: "Handle 3 ambiguous tickets requiring info-gathering before deciding"
+    difficulty: hard
